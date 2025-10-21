@@ -1,0 +1,5 @@
+/App/OpenSiv3D_test(debug).exe filter=lfs diff=lfs merge=lfs -text
+/Intermediate/OpenSiv3D_test/Debug/Intermediate/OpenSiv3D_test(debug).ilk filter=lfs diff=lfs merge=lfs -text
+/Intermediate/OpenSiv3D_test/Debug/Intermediate/OpenSiv3D_test(debug).pch filter=lfs diff=lfs merge=lfs -text
+/Intermediate/OpenSiv3D_test/Debug/OpenSiv3D_test(debug).exe filter=lfs diff=lfs merge=lfs -text
+/Intermediate/OpenSiv3D_test/Debug/OpenSiv3D_test(debug).pdb filter=lfs diff=lfs merge=lfs -text
