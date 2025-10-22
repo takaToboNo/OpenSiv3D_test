@@ -1,1 +1,35 @@
 .vs/
+# ====== 生成物（ビルド成果物）: 追跡しない ======
+# ディレクトリ単位
+App/
+Intermediate/
+
+# ビルド中間ファイル・出力（拡張子）
+*.exe
+*.dll
+*.lib
+*.exp
+*.obj
+*.iobj
+*.ipdb
+*.pdb
+*.ilk
+*.log
+*.tlog
+*.idb
+*.pch
+
+# IDE 一時物
+.vs/
+*.user
+*.suo
+
+# OSノイズ
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ====== 例外（追跡したい物を “再許可” する例） ======
+# 例: Assets は追跡したい（コメントを外して使う）
+# !Assets/
+# !Assets/**/.keep
