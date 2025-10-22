@@ -1,35 +1,33 @@
+# Visual Studio / MSVC
 .vs/
-# ====== 生成物（ビルド成果物）: 追跡しない ======
-# ディレクトリ単位
-App/
-Intermediate/
+*.VC.db
+*.VC.opendb
+*.idb
+*.tlog
+*.obj
+*.pch
+*.pdb
+*.ilk
+*.res
 
-# ビルド中間ファイル・出力（拡張子）
+# Build outputs
+Debug/
+Release/
+x86/
+x64/
 *.exe
 *.dll
 *.lib
 *.exp
-*.obj
-*.iobj
-*.ipdb
-*.pdb
-*.ilk
+
+# Temp / logs
 *.log
-*.tlog
-*.idb
-*.pch
+*.tmp
 
-# IDE 一時物
-.vs/
-*.user
-*.suo
+# Project-specific (例)
+Intermediate/
+App/
 
-# OSノイズ
+# OS
 .DS_Store
 Thumbs.db
-desktop.ini
-
-# ====== 例外（追跡したい物を “再許可” する例） ======
-# 例: Assets は追跡したい（コメントを外して使う）
-# !Assets/
-# !Assets/**/.keep
