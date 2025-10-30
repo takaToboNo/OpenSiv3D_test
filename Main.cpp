@@ -25,7 +25,7 @@ void Main()
 	while (System::Update())
 	{
 		// デバッグカメラの更新 (カメラの移動スピード: 2.0)
-		camera.update(2.0);
+		camera.update(8.0);
 
 		// 3D シーンにカメラを設定
 		Graphics3D::SetCameraTransform(camera);
@@ -39,11 +39,8 @@ void Main()
 			// 床を描画
 			Plane{ 64 }.draw(uvChecker);
 
-			// ボックスを描画
-			Box{ -8,2,0,4 }.draw(ColorF{ 0.8, 0.6, 0.4 }.removeSRGBCurve());
-
-			// 球を描画
-			Sphere{ 0,2,0,2 }.draw(ColorF{ 0.4, 0.8, 0.6 }.removeSRGBCurve());
+			// 立方体を描画
+			Box{ 0, 2, 0, 6, 1, 1 }.draw(ColorF{ 0.6, 0.4, 0.8 }.removeSRGBCurve());
 
 			// 円柱を描画
 			Cylinder{ 8, 2, 0, 2, 4 }.draw(ColorF{ 0.6, 0.4, 0.8 }.removeSRGBCurve());
