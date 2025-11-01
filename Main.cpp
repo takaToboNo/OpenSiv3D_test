@@ -2,59 +2,43 @@
 
 void Main()
 {
-	// ウインドウとシーンを 1280x720 にリサイズ
 	Window::Resize(1280, 720);
-
-	// 背景色 (リニアレンダリング用なので removeSRGBCurve() で sRGB カーブを除去）
 	const ColorF backgroundColor = ColorF{ 0.4, 0.6, 0.8 }.removeSRGBCurve();
-
-	// UV チェック用テクスチャ (ミップマップ使用。リニアレンダリング時に正しく扱われるよう、sRGB テクスチャであると明示）
 	const Texture uvChecker{ U"example/texture/uv.png", TextureDesc::MippedSRGB };
-
-	// 3D シーンを描く、マルチサンプリング対応レンダーテクスチャ
-	// リニア色空間のレンダリング用に TextureFormat::R8G8B8A8_Unorm_SRGB
-	// 奥行きの比較のための深度バッファも使うので HasDepth::Yes
-	// マルチサンプル・レンダーテクスチャなので、描画内容を使う前に resolve() が必要
+	const Texture woodTexture{ U"example/texture/wood.jpg", TextureDesc::MippedSRGB };
 	const MSRenderTexture renderTexture{ Scene::Size(), TextureFormat::R8G8B8A8_Unorm_SRGB, HasDepth::Yes };
 
-	// 3D シーンのデバッグ用カメラ
-	// 縦方向の視野角 30°, カメラの位置 (10, 16, -32)
-	// 前後移動: [W][S], 左右移動: [A][D], 上下移動: [E][X], 注視点移動: アローキー, 加速: [Shift][Ctrl]
-	DebugCamera3D camera{ renderTexture.size(), 30_deg, Vec3{ 10, 16, -32 } };
+	constexpr double nearClip = 2.0;
+	DebugCamera3D camera{ renderTexture.size(), 30_deg, Vec3{ 10, 16, -32 }, Vec3{0,0,0}, Vec3{0,1,0}, nearClip };
 
 	while (System::Update())
 	{
-		// デバッグカメラの更新 (カメラの移動スピード: 2.0)
-		camera.update(8.0);
-
-		// 3D シーンにカメラを設定
+		camera.update(2.0);
 		Graphics3D::SetCameraTransform(camera);
 
 		// 3D 描画
 		{
-			// renderTexture を背景色で塗りつぶし、
-			// renderTexture を 3D 描画のレンダーターゲットに
 			const ScopedRenderTarget3D target{ renderTexture.clear(backgroundColor) };
 
-			// 床を描画
 			Plane{ 64 }.draw(uvChecker);
 
-			// 立方体を描画
-			Box{ 0, 2, 0, 6, 1, 1 }.draw(ColorF{ 0.6, 0.4, 0.8 }.removeSRGBCurve());
+			{
+				RasterizerState r = RasterizerState::Default3D;
+				r.depthBias = 100;
+				const ScopedRenderStates3D rasterizer{ r };
 
-			// 円柱を描画
-			Cylinder{ 8, 2, 0, 2, 4 }.draw(ColorF{ 0.6, 0.4, 0.8 }.removeSRGBCurve());
+				Plane{ Vec3{ -16, 0, 0}, 12 }.draw(Linear::Palette::Red);
+			}
+
+			Plane{ Vec3{ 0, 0.0001, 0}, 12 }.draw(Linear::Palette::Red);
+
+			Plane{ Vec3{ 16, 0.01, 0}, 12 }.draw(Linear::Palette::Red);
 		}
 
 		// 3D シーンを 2D シーンに描画
 		{
-			// renderTexture を resolve する前に 3D 描画を実行する
 			Graphics3D::Flush();
-
-			// マルチサンプル・テクスチャのリゾルブ
 			renderTexture.resolve();
-
-			// リニアレンダリングされた renderTexture をシーンに転送
 			Shader::LinearToScreen(renderTexture);
 		}
 	}
